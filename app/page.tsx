@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -13,13 +14,14 @@ export default function Home() {
             <span className="text-2xl font-bold tracking-tight">Food<span className="text-secondary">Tech</span></span>
           </div>
           <div className="hidden md:flex gap-8 font-medium">
-            <a href="#" className="hover:text-primary transition-colors">Menú</a>
-            <a href="#" className="hover:text-primary transition-colors">Reservas</a>
-            <a href="#" className="hover:text-primary transition-colors">Nosotros</a>
+            <Link href="/" className="hover:text-primary transition-colors">Inicio</Link>
+            <Link href="/nosotros" className="hover:text-primary transition-colors">Nosotros</Link>
+            <Link href="/menu" className="hover:text-primary transition-colors">Menú</Link>
+            <Link href="/reservas" className="hover:text-primary transition-colors">Reservas</Link>
           </div>
-          <button className="bg-secondary hover:bg-secondary-hover text-white px-6 py-2 rounded-full font-semibold transition-transform hover:scale-105 shadow-lg shadow-secondary/30">
+          <Link href="/reservas" className="bg-secondary hover:bg-secondary-hover text-white px-6 py-2 rounded-full font-semibold transition-transform hover:scale-105 shadow-lg shadow-secondary/30">
             Pedir ahora
-          </button>
+          </Link>
         </div>
       </nav>
 
