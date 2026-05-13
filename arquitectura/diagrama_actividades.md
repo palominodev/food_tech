@@ -14,15 +14,6 @@ skinparam shadowing false
 start
 
 |Cliente|
-:Iniciar sesión;
-
-if (¿Autenticado?) then (no)
-  |Cliente|
-  :Registrarse;
-else (sí)
-endif
-
-|Cliente|
 :Ver menú / catálogo;
 :Seleccionar productos;
 

@@ -1,88 +1,138 @@
 @startuml
-skinparam ActivityBackgroundColor #5AABEC
-skinparam ActivityBorderColor #2980C4
-skinparam ActivityFontColor #042C53
-skinparam ArrowColor #2980C4
+skinparam sequenceArrowThickness 1.5
+skinparam sequenceArrowColor #2980C4
+skinparam sequenceLifeLineBorderColor #2980C4
+skinparam sequenceParticipantBackgroundColor #5AABEC
+skinparam sequenceParticipantBorderColor #2980C4
+skinparam sequenceParticipantFontColor #042C53
+skinparam sequenceParticipantFontSize 13
+skinparam sequenceBoxBackgroundColor #E6F1FB
+skinparam sequenceBoxBorderColor #2980C4
 skinparam shadowing false
 
-title Diagrama de Interacción General - ERP Restaurante
+actor Cliente
+participant "Interfaz de Usuario" as UI
+participant "Lógica de Negocio" as Logica
+participant "Gestión de Usuarios" as GUsuarios
+participant "Gestión de Pedidos" as GPedidos
+participant Mesero
+participant Cocinero
+participant Cajero
+participant "Sistema de Pago" as GPagos
+participant "Pasarela de Pago" as Pasarela
+participant "Inventario" as GInventario
+participant Administrador
+database "ERP_Restaurante_DB" as BD
 
-start
+' ─────────────────────────────────────
+' 1. PEDIDO
+' ─────────────────────────────────────
+ref over Cliente, GPedidos
+  Proceso de pedido
+end ref
 
-:Cliente selecciona productos;
+Cliente -> UI : realizarPedido()
+UI -> Logica : solicitarMenuCatalogo()
+Logica -> GPedidos : consultarProductos()
+GPedidos -> BD : SELECT productos disponibles
+BD --> GPedidos : Lista de productos
+GPedidos --> UI : Mostrar menú / catálogo
+UI --> Cliente : Ver menú
 
-' --- ref: Diagrama de Secuencia "Toma de Pedido" ---
-partition "ref: Secuencia — Toma de Pedido" {
-  :Mesero → Sistema: registrarPedido();
-  :Sistema → Inventario: verificarStock();
+Cliente -> UI : seleccionarProductos()
+UI -> Logica : agregarAlCarrito()
+Logica -> GPedidos : calcularSubtotal()
+UI --> Cliente : Mostrar carrito
 
-  if (¿Stock disponible?) then (no)
-    :Sistema → Mesero: Error stock insuficiente;
-    :Pedido cambia a **Cancelado**;
-    stop
-  else (sí)
-    :Sistema → Inventario: actualizarStock(-cantidad);
-    :Pedido cambia a **Registrado**;
-  endif
-}
+Cliente -> Mesero : confirmarPedido()
+Mesero -> Logica : registrarPedido()
+Logica -> GPedidos : asociarCliente()
+GPedidos -> GPedidos : calcularTotal()
+GPedidos -> BD : INSERT Pedido + DetallePedido
+BD --> GPedidos : Pedido guardado
+GPedidos --> Logica : Pedido registrado
+Logica --> Mesero : Confirmación
+Mesero --> Cliente : Pedido confirmado
 
-' --- ref: Diagrama de Secuencia "Preparación" ---
-partition "ref: Secuencia — Preparación en Cocina" {
-  :Sistema → Cocinero: notificarNuevoPedido();
-  :Cocinero → Sistema: actualizarEstado(En_Preparacion);
-  :Cocinero prepara platillos;
-  :Cocinero → Sistema: actualizarEstado(Listo);
-}
+' ─────────────────────────────────────
+' 3. COCINA
+' ─────────────────────────────────────
+ref over Logica, Cocinero
+  Proceso de cocina
+end ref
 
-' --- ref: Diagrama de Secuencia "Entrega" ---
-partition "ref: Secuencia — Entrega" {
-  :Sistema → Mesero: notificarPedidoListo();
-  :Mesero → Cliente: entregarPedido();
-  :Pedido cambia a **Entregado**;
-}
+Logica -> Cocinero : notificarPedido()
+Cocinero -> UI : verPedidos()
+UI -> GPedidos : consultarEstadoPedido()
+GPedidos -> BD : SELECT pedidos pendientes
+BD --> GPedidos : Pedidos
+GPedidos --> Cocinero : Pedido recibido
 
-' --- ref: Diagrama de Secuencia "Pago" ---
-partition "ref: Secuencia — Pago" {
-  :Cliente → Cajero: solicitarPago();
-  :Cajero → Sistema: procesarPago(pedido);
-  :Sistema → PasarelaPago: procesarPago(monto);
+loop hasta que el pedido esté listo
+  Cocinero -> Logica : actualizarEstado()
+  Logica -> GPedidos : cambiarEstado()
+  GPedidos -> BD : UPDATE estado pedido
+  BD --> GPedidos : OK
+  GPedidos --> Cocinero : Estado actualizado
+end
 
-  if (¿Pago aprobado?) then (no)
-    :Reintento de pago;
-    :Sistema → PasarelaPago: procesarPago(monto);
-  else (sí)
-  endif
+Logica -> Mesero : notificarPedidoListo()
+Mesero --> Cliente : Entrega del pedido
 
-  :Pedido cambia a **Pagado**;
-  :Cajero → Cliente: entregarComprobante();
-}
+' ─────────────────────────────────────
+' 4. PAGO
+' ─────────────────────────────────────
+ref over Cajero, Pasarela
+  Proceso de pago
+end ref
 
-' --- ref: Diagrama de Secuencia "Cierre" ---
-partition "ref: Secuencia — Cierre" {
-  fork
-    :Sistema → Inventario: confirmarDescuentoStock();
+Cliente -> Cajero : solicitarPago()
+Cajero -> GPagos : procesarPago()
+GPagos -> BD : INSERT Pago
 
-    if (¿Stock bajo?) then (sí)
-      :Sistema: generarOrdenCompra();
-    else (no)
-    endif
-  fork again
-    :Sistema: registrar cierre;
-  end fork
+alt Pago en efectivo
+  GPagos --> Cajero : Registrar monto en efectivo
+else Pago digital
+  GPagos -> Pasarela : procesar()
+  Pasarela --> GPagos : Pago confirmado
+  GPagos -> GPagos : confirmar()
+end
 
-  :Sistema: generarReporte(venta);
-}
+GPagos -> BD : UPDATE estado pago
+BD --> GPagos : OK
+Cajero -> GPagos : emitirComprobante()
+GPagos --> UI : Comprobante generado
+UI --> Cliente : Comprobante emitido
 
-stop
+' ─────────────────────────────────────
+' 5. INVENTARIO
+' ─────────────────────────────────────
+ref over GInventario, Administrador
+  Gestión de inventario
+end ref
 
-note right
-  Cada partición "ref:" representa
-  una referencia a un fragmento
-  del Diagrama de Secuencia.
-  
-  Los estados (Registrado, En_Preparacion,
-  Listo, Entregado, Pagado, Cancelado)
-  coinciden con el Diagrama de Estados.
-end note
+GPedidos -> GInventario : actualizarStock()
+GInventario -> BD : UPDATE stock productos
+GInventario -> GInventario : verificarStock()
 
+alt Stock bajo mínimo
+  GInventario -> Administrador : alertaStockBajo()
+  Administrador -> Logica : gestionarProveedores()
+  Logica -> BD : INSERT OrdenCompra
+  BD --> Logica : Orden guardada
+  Logica --> Administrador : OrdenCompra generada
+else Stock normal
+  GInventario --> Logica : Stock OK
+end
+
+' ─────────────────────────────────────
+' 6. REPORTES
+' ─────────────────────────────────────
+Administrador -> UI : verReportes()
+UI -> Logica : solicitarReporte()
+Logica -> BD : SELECT datos consolidados
+BD --> Logica : Datos
+Logica -> Logica : generar()
+Logica --> UI : Reporte generado
+UI --> Administrador : Reporte mostrado
 @enduml

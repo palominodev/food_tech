@@ -1,79 +1,113 @@
 @startuml
-skinparam monochrome true
-skinparam shadowing false
-
-title Diagrama de Temporización - Ciclo de Vida del Pedido
-
-' --- LÍNEAS DE VIDA CON ESTADOS ---
-
-concise "Pedido" as P
-concise "Cocinero" as CO
-concise "Mesero" as M
-concise "Cajero" as CA
-concise "Inventario" as I
-concise "PasarelaPago" as PP
-
-' --- ESCALA DE TIEMPO ---
-
 @0
-P is Registrado
-CO is Inactivo
-M is Registrando
+robust "Cliente" as C
+robust "Mesero" as M
+robust "Pedido" as P
+robust "Cocina" as K
+robust "Cajero" as CA
+robust "Pago" as PG
+robust "PasarelaPago" as PP
+robust "Inventario" as INV
+robust "Administrador" as ADM
+
+C is En_Mesa
+M is Inactivo
+P is Sin_Pedido
+K is Inactivo
 CA is Inactivo
-I is VerificandoStock
+PG is Sin_Pago
 PP is Inactivo
+INV is Stock_OK
+ADM is Inactivo
+
+@1
+C is Seleccionando
+P is En_Carrito
 
 @2
+C is Confirmando
+M is Registrando
 P is Registrado
-I is StockActualizado
-M is Esperando
 
 @3
+C is Esperando
+M is Notificando_Cocina
 P is En_Preparacion
-CO is Preparando
-M is Esperando
-I is Inactivo
+K is Preparando
+
+@4
+K is Actualizando_Estado
+
+@5
+K is Listo
+P is Listo
+M is Consultando_Estado
+
+@6
+C is Recibiendo
+M is Entregando
+P is Entregado
+K is Inactivo
+
+@7
+C is Decidiendo
 
 @8
-P is Listo
-CO is Notificando
-M is Entregando
+C is Continuar_Pidiendo
+P is Registrado
+M is Registrando
 
 @9
-P is Entregado
-CO is Inactivo
-M is Inactivo
+C is Esperando
+P is En_Preparacion
+K is Preparando
 
 @10
+C is Recibiendo
 P is Entregado
-CA is ProcesandoPago
-PP is ProcesandoTransaccion
+K is Inactivo
+M is Entregando
 
 @11
-PP is Confirmado
-CA is EmitendoComprobante
+C is Pagando
+CA is Solicitando_Pago
+PG is Procesando
 
 @12
-P is Pagado
-CA is Inactivo
-PP is Inactivo
+CA is Procesando_Pago
+PP is Procesando_Digital
 
 @13
-P is Cerrado
-I is ConfirmandoStock
+PP is Confirmado
+PG is Sin_Confirmar
+CA is Emitiendo_Comprobante
 
 @14
-I is Inactivo
+C is Finalizado
+P is Pagado
+PG is Confirmado
+PP is Inactivo
+CA is Inactivo
+INV is Actualizando
 
-' --- RESTRICCIONES DE TIEMPO ---
+@15
+INV is Verificando
 
-@0 <-> @2 : {≤ 2 min}\nVerificación stock
-@3 <-> @8 : {5-15 min}\nPreparación cocina
-@8 <-> @9 : {≤ 1 min}\nEntrega al cliente
-@10 <-> @12 : {≤ 2 min}\nProceso de pago
-@12 <-> @14 : {≤ 2 min}\nCierre y actualización
+@16
+INV is Stock_Bajo
+ADM is Gestionando_Proveedor
 
-highlight 3 to 8 #E8F4FD : Fase crítica — Preparación
-highlight 10 to 12 #FCE4EC : Fase crítica — Pago
+@17
+ADM is Generando_OrdenCompra
+P is Cerrado
 
+@18
+INV is Stock_OK
+ADM is Generando_Reporte
+
+@19
+C is Inactivo
+M is Inactivo
+PG is Sin_Pago
+ADM is Inactivo
 @enduml
