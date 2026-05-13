@@ -5,7 +5,7 @@ import { db } from '@/db/client';
 import { usuarios } from '@/db/schema/usuarios';
 import { eq } from 'drizzle-orm';
 import { comparePassword } from '@/lib/auth/hash';
-import { signToken } from '@/lib/auth/jwt';
+import { signToken, type JWTPayload } from '@/lib/auth/jwt';
 
 export interface ActionResponse {
   success: boolean;
