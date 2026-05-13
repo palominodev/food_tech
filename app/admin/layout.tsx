@@ -49,6 +49,12 @@ export default async function AdminLayout({
           >
             Productos
           </Link>
+          <Link
+            href="/admin/proveedores"
+            className="block rounded-md px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+          >
+            Proveedores
+          </Link>
         </nav>
         <div className="mt-auto pt-8">
           <LogoutButton />

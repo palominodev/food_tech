@@ -30,7 +30,22 @@ async function seed(): Promise<void> {
     console.log("✓ Users already exist, skipping system user");
   }
 
-  // 2. Clean and reseed productos + inventario
+  // 2. Seed proveedores (idempotent)
+  const existingProveedores = await db.select().from(schema.proveedores).limit(1);
+  if (existingProveedores.length === 0) {
+    await db.insert(schema.proveedores).values([
+      { nombre: "Distribuidora de Vegetales El Campo", contacto: "contacto@elcampo.com" },
+      { nombre: "Carnes Premium del Sur", contacto: "ventas@carnespremium.com" },
+      { nombre: "Pescadería Mar Azul", contacto: "pedidos@marazul.com" },
+      { nombre: "Distribuidora de Bebidas y Licores Norte", contacto: "admin@norte.com" },
+      { nombre: "Molinos y Granos Central", contacto: "compras@molinoscentral.com" },
+    ]);
+    console.log("✓ Proveedores created");
+  } else {
+    console.log("✓ Proveedores already exist, skipping");
+  }
+
+  // 3. Clean and reseed productos + inventario
   console.log("Cleaning existing product data...");
   await db.delete(schema.inventario);
   await db.delete(schema.detallesPedidos);
@@ -77,7 +92,7 @@ async function seed(): Promise<void> {
 
   console.log(`✓ ${inserted.length} products created`);
 
-  // 3. Inventario for each product
+  // 4. Inventario for each product
   const inventarioData = inserted.map((p, i) => ({
     productoId: p.id,
     stockActual: 100 - i * 5,
