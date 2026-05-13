@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🍔 Food Tech: Donde el código se quema más rápido que las papas fritas
 
-## Getting Started
+¡Bienvenido! Si estás leyendo esto, es porque o sos parte del equipo o te perdiste muy fuerte en GitHub. **Food Tech** es nuestro intento de revolucionar el mundo gastronómico con bits y bytes, aunque por ahora lo único que revolucionamos es el contador de errores de la consola.
 
-First, run the development server:
+## 🤡 El "Dream Team" (Miralos y llorá)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Acá tenés a los responsables de que esto (a veces) compile:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+*   **Victor Manuel (El Inmortal de Main):** El único ser humano que tira un `git push --force` a la rama `main` y sobrevive para contarlo. Dice que su código se documenta solo. Todavía estamos esperando que el código aprenda a hablar.
+*   **Alejandro Daniel (El Filósofo):** Te puede dar una charla magistral sobre la diferencia existencial entre `null` y `undefined`, pero se olvida el `await` en cada promesa. Su café siempre está más frío que el corazón de un reclutador.
+*   **Gabriela Fumiko (La Francotiradora del CSS):** Tiene visión de rayos X para detectar divs movidos 0.5 píxeles. Sueña en Flexbox y sus pesadillas están hechas de `float: left`. Si el botón no brilla, no se sube.
+*   **Patricio (El Solucionador):** Su técnica de debugging es suprema: llena el código de `console.log('aquí')`, `console.log('ahora sí')` y `console.log('por favor funcioná')`. Si anda, no lo toques.
+*   **Alexis Daniel (El Optimista):** "¿Ese feature? Un par de horitas, tranqui". Generalmente ese "tranqui" termina en una refactorización de media base de datos a las 3 de la mañana.
+*   **Jerimi Scott (El Arquitecto Oscuro):** Dibuja diagramas tan complejos que parecen planos para invocar a Cthulhu. Tiene alergia severa a lo "simple". Si no tiene tres capas de abstracción, no le gusta.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Stack Tecnológico (Lo que pudimos pagar)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+*   **Next.js:** Porque nos gusta sufrir con el App Router pero sentirnos modernos.
+*   **Tailwind CSS:** La única razón por la que Gabriela no nos prendió fuego la oficina todavía.
+*   **Drizzle + SQLite:** Una base de datos que vive en un archivito. Práctico, sencillo y humilde como nosotros.
+*   **Vitest:** Tenemos tests. Que pasen es otra historia totalmente distinta.
 
-## Learn More
+## 🚀 Cómo levantar este muerto
 
-To learn more about Next.js, take a look at the following resources:
+Si tenés el coraje suficiente, seguí estos pasos:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1.  Instalá las dependencias (si `pnpm` tiene ganas de trabajar hoy):
+    ```bash
+    pnpm install
+    ```
+2.  Poné en marcha el motor:
+    ```bash
+    pnpm dev
+    ```
+3.  Abrí [http://localhost:3000](http://localhost:3000) y rezá para que no explote nada.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
+> "Escribimos código, rompemos producción y, a veces, sabemos lo que estamos haciendo."
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
