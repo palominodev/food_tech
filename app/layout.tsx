@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "FoodTech",
-  description: "Pedidos online",
+  title: "Chicken Food",
+  description: "El mejor pollo, rápido y delicioso",
 };
 
 export default function RootLayout({
@@ -33,9 +33,9 @@ export default function RootLayout({
           <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <Link href="/" className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-                <span className="text-white font-bold text-xl leading-none">F</span>
+                <span className="text-white font-bold text-xl leading-none">C</span>
               </div>
-              <span className="text-2xl font-bold tracking-tight">Food<span className="text-secondary">Tech</span></span>
+              <span className="text-2xl font-bold tracking-tight">Chicken<span className="text-secondary">Food</span></span>
             </Link>
             <nav className="hidden md:flex gap-8 font-medium">
               <Link href="/" className="hover:text-primary transition-colors">Inicio</Link>

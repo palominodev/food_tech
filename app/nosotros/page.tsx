@@ -1,8 +1,8 @@
 import React from "react";
 
 export const metadata = {
-  title: "Nosotros | Food Tech",
-  description: "Conoce al equipo detrás de Food Tech",
+  title: "Nosotros | Chicken Food",
+  description: "Conoce al equipo detrás de Chicken Food",
 };
 
 const teamMembers = [

@@ -9,8 +9,8 @@ export default function Home() {
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?q=80&w=2070&auto=format&fit=crop"
-            alt="Restaurant interior"
+            src="/images/hero-chicken.png"
+            alt="Pollo rostizado premium"
             fill
             className="object-cover"
             priority
@@ -21,16 +21,16 @@ export default function Home() {
         {/* Content */}
         <div className="relative z-10 max-w-7xl mx-auto px-6 py-32 md:py-48 flex flex-col items-start w-full animate-fade-in-up">
           <span className="text-primary font-bold tracking-widest uppercase mb-4 text-sm md:text-base">
-            Sabor Auténtico
+            El Rey del Pollo
           </span>
           <h1 className="text-5xl md:text-7xl font-extrabold leading-tight mb-6 max-w-2xl">
-            Una experiencia <br />
+            Sabor que <br />
             <span className="text-transparent bg-clip-text bg-linear-to-r from-primary to-secondary">
-              fresca y deliciosa
+              enciende tus sentidos
             </span>
           </h1>
           <p className="text-lg md:text-xl text-foreground/80 max-w-lg mb-10 leading-relaxed font-medium">
-            Descubre la fusión perfecta entre ingredientes locales y técnicas modernas en un ambiente inigualable.
+            El pollo más crujiente y jugoso de la ciudad, preparado con nuestra receta secreta y las mejores especias.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
             <Link

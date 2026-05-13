@@ -1,6 +1,6 @@
-# 🍔 Food Tech: Donde el código se quema más rápido que las papas fritas
-
-¡Bienvenido! Si estás leyendo esto, es porque o sos parte del equipo o te perdiste muy fuerte en GitHub. **Food Tech** es nuestro intento de revolucionar el mundo gastronómico con bits y bytes, aunque por ahora lo único que revolucionamos es el contador de errores de la consola.
+# 🍗 Chicken Food: Donde el pollo es sagrado y el código... bueno, se intenta
++
++¡Bienvenido! Si estás leyendo esto, es porque o sos parte del equipo o tenés mucha hambre de buen código (y de pollo). **Chicken Food** es nuestra plataforma para llevar el sabor más crujiente a la web, aunque a veces el código se nos quema un poquito en los bordes.
 
 ## 🤡 El "Dream Team" (Miralos y llorá)
 

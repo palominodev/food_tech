@@ -1,8 +1,8 @@
 import { getMenu, groupByCategory } from "@/features/menu/services/get-menu";
 
 export const metadata = {
-  title: "Menú | FoodTech",
-  description: "Descubre nuestro menú de productos frescos y deliciosos",
+  title: "Menú | Chicken Food",
+  description: "Descubre nuestro menú de pollo fresco y delicioso",
 };
 
 export default async function MenuPage() {

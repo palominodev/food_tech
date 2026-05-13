@@ -30,20 +30,17 @@ async function seed(): Promise<void> {
     console.log("✓ Users already exist, skipping system user");
   }
 
-  // 2. Seed proveedores (idempotent)
-  const existingProveedores = await db.select().from(schema.proveedores).limit(1);
-  if (existingProveedores.length === 0) {
-    await db.insert(schema.proveedores).values([
-      { nombre: "Distribuidora de Vegetales El Campo", contacto: "contacto@elcampo.com" },
-      { nombre: "Carnes Premium del Sur", contacto: "ventas@carnespremium.com" },
-      { nombre: "Pescadería Mar Azul", contacto: "pedidos@marazul.com" },
-      { nombre: "Distribuidora de Bebidas y Licores Norte", contacto: "admin@norte.com" },
-      { nombre: "Molinos y Granos Central", contacto: "compras@molinoscentral.com" },
-    ]);
-    console.log("✓ Proveedores created");
-  } else {
-    console.log("✓ Proveedores already exist, skipping");
-  }
+  // 2. Seed proveedores
+  console.log("Cleaning and reseeding proveedores...");
+  await db.delete(schema.proveedores);
+  await db.insert(schema.proveedores).values([
+    { nombre: "Granja Avícola El Pollón", contacto: "ventas@elpollon.com" },
+    { nombre: "Suministros Avícolas del Norte", contacto: "pedidos@san.com" },
+    { nombre: "Distribuidora de Papas y Tubérculos", contacto: "logistica@papasperu.com" },
+    { nombre: "Bebidas Refrescantes del Perú", contacto: "admin@bebidas.pe" },
+    { nombre: "Envases y Descartables EcoFood", contacto: "ventas@ecofood.com" },
+  ]);
+  console.log("✓ Proveedores created");
 
   // 3. Clean and reseed productos + inventario
   console.log("Cleaning existing product data...");
@@ -54,36 +51,37 @@ async function seed(): Promise<void> {
   await db.delete(schema.productos);
 
   const productosData = [
-    // Entradas
-    { nombre: "Bruschetta de Tomate", precio: 6.5, categoria: "Entradas", disponible: true },
-    { nombre: "Calamares a la Romana", precio: 9.0, categoria: "Entradas", disponible: true },
-    { nombre: "Ensalada César con Pollo", precio: 8.5, categoria: "Entradas", disponible: true },
-    { nombre: "Nachos con Queso y Guacamole", precio: 7.5, categoria: "Entradas", disponible: true },
+    // Entradas y Complementos
+    { nombre: "Alitas BBQ (6 unidades)", precio: 12.5, categoria: "Entradas", disponible: true },
+    { nombre: "Nuggets Crujientes (10 unidades)", precio: 9.9, categoria: "Entradas", disponible: true },
+    { nombre: "Papas Fritas Grandes", precio: 8.5, categoria: "Entradas", disponible: true },
+    { nombre: "Ensalada Coleslaw Tradicional", precio: 6.5, categoria: "Entradas", disponible: true },
 
-    // Platos Principales
-    { nombre: "Hamburguesa Clásica", precio: 12.99, categoria: "Platos Principales", disponible: true },
-    { nombre: "Pasta Carbonara Auténtica", precio: 14.5, categoria: "Platos Principales", disponible: true },
-    { nombre: "Pollo al Curry con Arroz", precio: 13.99, categoria: "Platos Principales", disponible: true },
-    { nombre: "Lomo Saltado", precio: 16.5, categoria: "Platos Principales", disponible: true },
-    { nombre: "Salmón a la Plancha", precio: 18.0, categoria: "Platos Principales", disponible: true },
-    { nombre: "Pizza Margherita Familiar", precio: 12.0, categoria: "Platos Principales", disponible: true },
+    // Cubetas y Combos
+    { nombre: "Cubeta Familiar (12 piezas)", precio: 45.99, categoria: "Combos", disponible: true },
+    { nombre: "Combo Pareja (4 piezas + Papas + Bebida)", precio: 28.5, categoria: "Combos", disponible: true },
+    { nombre: "Súper Mega Cubeta (20 piezas + 2 Papas G)", precio: 65.0, categoria: "Combos", disponible: true },
+    { nombre: "Chicken Sandwich Combo", precio: 15.5, categoria: "Combos", disponible: true },
+
+    // Piezas y Presas
+    { nombre: "Presa de Pechuga", precio: 6.5, categoria: "Presas", disponible: true },
+    { nombre: "Presa de Pierna", precio: 5.5, categoria: "Presas", disponible: true },
+    { nombre: "Presa de Encuentro", precio: 5.8, categoria: "Presas", disponible: true },
+    { nombre: "Ala de Pollo", precio: 4.5, categoria: "Presas", disponible: true },
 
     // Postres
-    { nombre: "Tarta de Queso con Arándanos", precio: 6.5, categoria: "Postres", disponible: true },
-    { nombre: "Helado Artesanal de Vainilla", precio: 5.0, categoria: "Postres", disponible: true },
-    { nombre: "Brownie con Helado de Chocolate", precio: 7.0, categoria: "Postres", disponible: true },
-    { nombre: "Tiramisú Casero", precio: 6.0, categoria: "Postres", disponible: true },
+    { nombre: "Pie de Manzana Caliente", precio: 6.0, categoria: "Postres", disponible: true },
+    { nombre: "Helado de Vainilla y Chocolate", precio: 4.5, categoria: "Postres", disponible: true },
+    { nombre: "Sundae de Caramelo", precio: 5.5, categoria: "Postres", disponible: true },
 
     // Bebidas
-    { nombre: "Coca-Cola 500ml", precio: 2.5, categoria: "Bebidas", disponible: true },
-    { nombre: "Limonada Natural", precio: 3.5, categoria: "Bebidas", disponible: true },
-    { nombre: "Agua Mineral sin Gas", precio: 1.5, categoria: "Bebidas", disponible: true },
-    { nombre: "Vino Tinto Malbec (copa)", precio: 5.5, categoria: "Bebidas", disponible: true },
-    { nombre: "Cerveza Artesanal IPA", precio: 4.5, categoria: "Bebidas", disponible: true },
-    { nombre: "Jugo de Naranja Recién Exprimido", precio: 3.0, categoria: "Bebidas", disponible: true },
+    { nombre: "Inca Kola 1L", precio: 5.5, categoria: "Bebidas", disponible: true },
+    { nombre: "Coca-Cola Original 1L", precio: 5.5, categoria: "Bebidas", disponible: true },
+    { nombre: "Chicha Morada de la Casa 1L", precio: 8.0, categoria: "Bebidas", disponible: true },
+    { nombre: "Agua Mineral 500ml", precio: 2.5, categoria: "Bebidas", disponible: true },
 
     // Test / Otros
-    { nombre: "Producto de Prueba No Disponible", precio: 99.99, categoria: "Test", disponible: false },
+    { nombre: "Producto Especial Temporal", precio: 19.99, categoria: "Especiales", disponible: false },
   ];
   const inserted = await db
     .insert(schema.productos)
@@ -95,7 +93,7 @@ async function seed(): Promise<void> {
   // 4. Inventario for each product
   const inventarioData = inserted.map((p, i) => ({
     productoId: p.id,
-    stockActual: 100 - i * 5,
+    stockActual: 100 - i * 4,
     stockMinimo: 10,
   }));
 
