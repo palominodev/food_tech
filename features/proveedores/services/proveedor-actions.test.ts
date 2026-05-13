@@ -8,6 +8,10 @@ import {
 } from "./proveedor-actions";
 import { db } from "@/db/client";
 
+vi.mock("next/cache", () => ({
+  revalidatePath: vi.fn(),
+}));
+
 vi.mock("@/db/client", () => ({
   db: {
     select: vi.fn(() => ({
