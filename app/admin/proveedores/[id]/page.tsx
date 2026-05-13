@@ -2,8 +2,13 @@ import { getProveedorById } from '@/features/proveedores/services/proveedor-acti
 import ProveedorForm from '../proveedor-form';
 import { notFound } from 'next/navigation';
 
-export default async function EditarProveedorPage({ params }: { params: { id: string } }) {
-  const proveedor = await getProveedorById(Number(params.id));
+export default async function EditarProveedorPage({ 
+  params 
+}: { 
+  params: Promise<{ id: string }> 
+}) {
+  const { id } = await params;
+  const proveedor = await getProveedorById(Number(id));
 
   if (!proveedor) {
     notFound();
