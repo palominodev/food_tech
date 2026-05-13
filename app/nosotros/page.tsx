@@ -105,7 +105,7 @@ export default function NosotrosPage() {
                 </h4>
 
                 <div className="relative">
-                  <span className="text-4xl text-slate-700 absolute -top-4 -left-2 font-serif opacity-50">"</span>
+                  <span className="text-4xl text-slate-700 absolute -top-4 -left-2 font-serif opacity-50">&quot;</span>
                   <p className="text-slate-300 leading-relaxed font-light z-10 relative pl-4">
                     {member.story}
                   </p>
