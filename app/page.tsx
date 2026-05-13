@@ -4,27 +4,6 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans">
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 glass-nav transition-all duration-300">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-              <span className="text-white font-bold text-xl leading-none">F</span>
-            </div>
-            <span className="text-2xl font-bold tracking-tight">Food<span className="text-secondary">Tech</span></span>
-          </div>
-          <div className="hidden md:flex gap-8 font-medium">
-            <Link href="/" className="hover:text-primary transition-colors">Inicio</Link>
-            <Link href="/nosotros" className="hover:text-primary transition-colors">Nosotros</Link>
-            <Link href="/menu" className="hover:text-primary transition-colors">Menú</Link>
-            <Link href="/reservas" className="hover:text-primary transition-colors">Reservas</Link>
-          </div>
-          <Link href="/reservas" className="bg-secondary hover:bg-secondary-hover text-white px-6 py-2 rounded-full font-semibold transition-transform hover:scale-105 shadow-lg shadow-secondary/30">
-            Pedir ahora
-          </Link>
-        </div>
-      </nav>
-
       {/* Hero Section */}
       <main className="flex-1 flex flex-col relative pt-20">
         {/* Background Image with Overlay */}
@@ -54,12 +33,18 @@ export default function Home() {
             Descubre la fusión perfecta entre ingredientes locales y técnicas modernas en un ambiente inigualable.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-            <button className="bg-primary hover:bg-primary-hover text-white px-8 py-4 rounded-full font-bold text-lg transition-all hover:-translate-y-1 shadow-xl shadow-primary/30 flex items-center justify-center gap-2">
+            <Link
+              href="/menu"
+              className="bg-primary hover:bg-primary-hover text-white px-8 py-4 rounded-full font-bold text-lg transition-all hover:-translate-y-1 shadow-xl shadow-primary/30 flex items-center justify-center gap-2"
+            >
               Ver el menú
-            </button>
-            <button className="bg-surface text-foreground border border-foreground/10 hover:border-foreground/20 px-8 py-4 rounded-full font-bold text-lg transition-all hover:-translate-y-1 flex items-center justify-center gap-2">
-              Hacer reserva
-            </button>
+            </Link>
+            <Link
+              href="/pedidos/nuevo"
+              className="bg-surface text-foreground border border-foreground/10 hover:border-foreground/20 px-8 py-4 rounded-full font-bold text-lg transition-all hover:-translate-y-1 flex items-center justify-center gap-2"
+            >
+              Hacer pedido
+            </Link>
           </div>
         </div>
       </main>
